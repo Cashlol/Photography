@@ -1,0 +1,29 @@
+.banner-card{
+    box-shadow: none !important;
+}
+
+.grid-content{
+    padding:5em !important;
+}
+
+.banner-card{
+    box-shadow: none !important;
+    border-radius: 0px !important;
+}
+
+.banner-image{
+    width:100%;
+    background-position: center;
+    background-size:cover;
+    min-height: 100vh;
+    background-attachment: fixed;
+}
+
+
+.float-text{
+    position: absolute !important;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    color:#FFFFFF;
+}

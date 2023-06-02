@@ -1,0 +1,14 @@
+.hover-media-card{
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+    transition: ease-in-out 0.3s;
+    object-fit: cover;
+    width:100%;
+}
+
+.hover-media-card:hover{
+    -webkit-filter: grayscale(0);
+    filter: grayscale(0);
+    transform: scale(1.1);
+}
+

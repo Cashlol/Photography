@@ -1,0 +1,14 @@
+.nav-bar{
+    box-shadow: none !important;
+    background-color: #FFFFFF !important;
+    color:black !important;
+}
+
+.post-button{
+    background-color: #157347 !important;
+}
+
+.logout-button{
+    background-color: red;
+}
+
