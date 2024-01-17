@@ -1,14 +1,16 @@
 .nav-bar{
+    /*
+    backdrop-filter: blur(3.1px) !important;
+    -webkit-backdrop-filter: blur(3.1px) !important;
+    background: rgba(255, 255, 255, 0.1) !important; 
+    */
+    background:var(--white) !important;
     box-shadow: none !important;
-    background-color: #FFFFFF !important;
-    color:black !important;
 }
 
-.post-button{
-    background-color: #157347 !important;
+.nav-logo{
+    font-family: var(--header-font) !important;
+    color:#000000;
+    font-size: 1.5em;
+    flex-grow: 1;
 }
-
-.logout-button{
-    background-color: red;
-}
-

@@ -1,0 +1,11 @@
+.main-header{
+    font-family: var(--header-font) !important; 
+    font-size: 2em;
+    text-align: center;
+    margin-top: 2em;
+}
+
+.display-empty{
+    text-align: center;
+}
+

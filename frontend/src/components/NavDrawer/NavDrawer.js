@@ -1,26 +1,27 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect, useContext} from 'react'
 import { useNavigate } from 'react-router-dom'
 import MenuIcon from '@mui/icons-material/Menu';
 import { Drawer, Box, IconButton, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, styled} from '@mui/material'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AccountBoxRoundedIcon from '@mui/icons-material/AccountBoxRounded';
+import AuthContext from '../context/AuthContext.js';
+import MenuButton from '../Menu/MenuButton.js'
 
 const NavDrawer = () => {
+
+  const {handleLogout} = useContext(AuthContext)
   
-  let [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
-  let navigate = useNavigate()
+  const navigate = useNavigate()
 
-  let goBack = () => {
-    navigate("/")
-  }
-
-  let list = () => (
+  const list = () => (
     <List>
       <ListItem disablePadding>
-        <ListItemButton onClick={goBack}>
+        <ListItemButton onClick={() => navigate("/")}>
           <ListItemIcon sx={{color:'black'}}>
             <HomeRoundedIcon/>
           </ListItemIcon>

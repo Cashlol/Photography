@@ -1,0 +1,33 @@
+.display-image{
+    height:731px !important; 
+}
+
+.grid-image{
+   object-fit: cover;
+   width:100%;
+   object-position: 50% 20% !important;
+}
+
+
+.grid-header{
+    font-family: var(--header-font) !important;
+    font-size:6.5em;
+}
+
+.grid-subheader{
+    font-family: var(--header-font) !important;
+    font-size: 3.5em;
+    margin-bottom: -30px;
+}
+
+.grid-body{
+    margin-top: 20px;
+    font-size: var(--body-size) !important;
+}
+
+.grid-content{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding:3em;
+}

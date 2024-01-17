@@ -1,134 +1,133 @@
 import React , { useState, useEffect }from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import {motion, useScroll} from 'framer-motion'
 import axios from 'axios'
-import { Card,CardActions,CardContent,CardMedia, CardHeader,Grid,Typography,Button,IconButton, Modal, Box} from '@mui/material'
+import { Grid,Button,IconButton, Modal, Box} from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import './PhotoList.css'
-import caution from '../../assets/exclamation.png'
+
  
-const PhotoList = ({photo, getPhoto}) => {
+const PhotoList = ({post, getPost}) => {
 
-  let [open, setOpen] = useState(false)
+const [open, setOpen] = useState(false)
+const navigate = useNavigate()
+const handleClose = () => setOpen(false)
+const handleOpen = () => setOpen(true)
 
-  let handleClose = () => setOpen(false)
-  let handleOpen = () => setOpen(true)
-
-  let handleDelete = () => {
-    axios.delete(`/api/photos/${photo?.id}/delete/`).then(() => {
-      getPhoto()
-      handleClose()
-    })
-  }
-
-  let getCaption = (content) => {
-    let caption = content.replaceAll('\n','')
-    if(caption.length>150)
-      return caption.slice(0,150) + ' ...'
-    else
-      return caption
-  }
-
+const handleDelete = () => {
+  axios.delete(`/api/post/${post?.id}/delete/`).then(() => {
+    getPost()
+    handleClose()
+  })
+}
   
-  let style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '500',
-    bgcolor: 'white',
-    borderRadius:'10px',
-    boxShadow: 24,
-    p: 3,
-  }
+const getDateString = (date) => {
+
+  const options = {year:'numeric',month:'long',day:'numeric'}
+  return new Date(date).toLocaleDateString(undefined,options)
+  
+}
+
+const getCaption = (content) => {
+  const caption = content.replaceAll('\n','')
+  if(caption.length>150)
+    return caption.slice(0,150) + ' ...'
+  else
+    return caption
+}
+
+const height = ["280","280"]
+const width = ["100%", "100%"]
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '500',
+  bgcolor: 'white',
+  borderRadius:'10px',
+  boxShadow: 24,
+  p: 3,
+}
+
+const draft2 = () => (
+
+<Grid container>
+
+<Grid item md={3} sm={6} xs={12} style={{overflow:'hidden'}} mt={5}>
+<motion.div
+  initial={{opacity:0, width:0}}
+  animate={{opacity:1, width:'100%'}}
+  exit={{opacity:0, width:0}}
+  transition={{duration:0.5}}
+>
+<img src={post.post_photo[0].image} height={'400px'} width={'90%'} className='media-card'/>
+</motion.div>
+  
+</Grid>
+<Grid item md={3} container spacing={1}>
+{post.post_photo.slice(1,3).map((photos, index) => (
+<Grid item style={{overflow:'hidden'}} key={photos.id}>
+<motion.div
+  initial={{opacity:0, width:0}}
+  animate={{opacity:1, width:'100%'}}
+  exit={{opacity:0, width:0}}
+  transition={{duration:0.5}}
+>
+<img src={photos.image} height={height[index]} width={width[index]} className='media-card'/>
+</motion.div>
+</Grid>
+))}
+</Grid>
 
 
+<Grid item md={6} sm={12} xs={12} container className="caption-overlap">
+<motion.div
+  initial={{opacity:0}}
+  animate={{opacity:1}}
+  exit={{opacity:0}}
+  transition={{duration:0.5}}
+>
+<Grid item md={12} container>
+<Grid item>
+<div className="card-header">{post?.post_title}</div>
+<div className="card-date">{getDateString(post?.date_uploaded)}</div>
+</Grid>
+<Grid item>
+<div className="card-content">{post?.post_caption !== null && getCaption(post?.post_caption)}</div>
+</Grid>
+<Modal
+  open={open}
+  onClose={handleClose}
+>
+<Box sx={style} textAlign={'center'}>
+  <div variant="h6" sx={{mb:2}}>Are you sure you want to delete ?</div>
+  <Button variant="contained" sx={{mr:2}} onClick={handleDelete}>Confirm</Button>
+  <Button color="error" variant="outlined" onClick={handleClose}>Cancel</Button>
+</Box>
+</Modal>
+<Button onClick={() => navigate(`/post/${post?.id}`)}>View Collection</Button>
+  <IconButton onClick={handleOpen}>
+  <DeleteIcon/>
+</IconButton>
+  <IconButton onClick={() => navigate(`/post/${post?.id}/update`)}>
+  <EditIcon/>
+</IconButton>
+</Grid>
+</motion.div>
+</Grid>
+</Grid>
+  
+)
 
-  let draft = () =>(
-      <Card className="card-list">
-        <Grid container spacing={4}>
-          <Grid item md={6} sm={6} xs={12} style={{overflow:'hidden'}}>
-            <CardMedia
-              component="img"
-              image={photo?.photo_src}
-              height="400"
-              className="hover-media-card"
-            />
-          </Grid>
-          <Grid item md={5} sm={6} xs={12} p={3}>
-            <CardHeader
-              title={
-                <Typography 
-                  variant="h4" 
-                >
-                  {photo?.photo_title}
-                </Typography>
-              }
-            />
-            <CardContent>
-                <Typography variant="body1">{photo?.photo_caption !== null && getCaption(photo?.photo_caption)}</Typography>
-            </CardContent>
-            <CardActions>
-            <Modal
-              open={open}
-              onClose={handleClose}
-            >
-            <Box sx={style} textAlign={'center'}>
-              <Typography variant="h6" sx={{mb:2}}>Are you sure you want to delete ?</Typography>
-              <Button variant="contained" sx={{mr:2}} onClick={handleDelete}>Confirm</Button>
-              <Button color="error" variant="outlined" onClick={handleClose}>Cancel</Button>
-            </Box>
-            </Modal>
-              <Link to ={`/photos/${photo?.id}`} style={{textDecoration:'none'}}>
-                  <Button>View More</Button>
-              </Link>
-              <IconButton onClick={handleOpen}>
-                <DeleteIcon sx={{color:'red'}}/>
-              </IconButton>
-              <Link to ={`/photos/${photo?.id}/update`}>
-                <IconButton>
-                  <EditIcon sx={{color:'green'}}/>
-                </IconButton>
-              </Link>
-            </CardActions>
-          </Grid>
-        </Grid>
-      </Card>
-  )
-
-  let draft2 = () => (
-    <Grid container>
-      <Grid md={6} sm={6} xs={12} item style={{overflow:'hidden'}}>
-        <img src={photo?.photo_src} height="400" className="hover-media-card"/>
-      </Grid>
-      <Grid md={5} sm={6} xs={12} item sx={{p:4}} container>
-        <Grid item>
-          <Typography variant="h4">{photo?.photo_title}</Typography>
-          <Typography variant="body1" sx={{mt:3}}>{photo?.photo_caption !== null && getCaption(photo?.photo_caption)}</Typography>
-        </Grid>
-        <Grid item sx={{mt:2}}>
-          <Link to ={`/photos/${photo?.id}`} style={{textDecoration:'none'}}>
-            <Button>View More</Button>
-          </Link>
-          <IconButton onClick={handleDelete}>
-            <DeleteIcon sx={{color:'red'}}/>
-          </IconButton>
-          <Link to ={`/photos/${photo?.id}/update`}>
-          <IconButton>
-            <EditIcon sx={{color:'green'}}/>
-          </IconButton>
-          </Link>
-        </Grid>
-      </Grid>
-    </Grid>
-  )
-
-  return (
-    <>     
-      {draft()}
-    </>
-  )
+return (
+  <>     
+    {draft2()}
+  </>
+)
 }
 
 export default PhotoList
+

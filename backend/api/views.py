@@ -8,6 +8,8 @@ from .serializer import PostSerializer, PhotoSerializer
 from django.core.files.storage import default_storage
 
 # Create your views here.
+
+#check if the credentials provided exist before returning a token 
 @api_view(['POST'])
 def login(request):
     if request.method == 'POST':
@@ -57,8 +59,14 @@ def updatePost(request,pk):
 @api_view(['DELETE'])
 def deletePost(request,pk):
     post = Post.objects.get(id=pk)
-    path = Post.photo_src.name
-    if(path):
-        default_storage.delete(path)
+    stupid = Photo.objects.filter(post=pk)
+    for photo in stupid:
+        path = photo.image.name
+        try:
+            default_storage.delete(path)
+        except PermissionError:
+            print('Permission Error')
+            # path.close()
+            default_storage.delete(path)
     post.delete()
     return Response('Photo is deleted!',status=status.HTTP_200_OK)

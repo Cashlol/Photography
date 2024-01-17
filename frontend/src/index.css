@@ -1,0 +1,21 @@
+:root{
+    --white:#FFFFFF;
+    --black:#000000;
+    --header-font: 'Playfair Display', serif;
+    --body-font: 'Bellefair',sans-serif;
+    --h1-size: 2em;
+    --h2-size: 1.5em;
+    --body-size: 1.2em;
+}
+
+*{
+    font-family: var(--body-font) !important;
+}
+
+
+body{
+    background-color:var(--white) !important;
+}
+
+
+

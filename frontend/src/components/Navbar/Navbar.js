@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState} from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import {Box, Typography, AppBar, Toolbar, Button} from '@mui/material'
-import { useMediaQuery, useTheme } from "@mui/material";
+import React, { useContext, useEffect, useState, MouseEvent} from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import {Box, Typography, AppBar, Toolbar, Button, Container,Menu, MenuItem,useMediaQuery, useTheme} from '@mui/material'
 import NavDrawer from '../NavDrawer/NavDrawer.js'
+import MenuButton from '../Menu/MenuButton.js'
 import './Navbar.css'
-import AuthContext from '../context/AuthContext.js';
+
 
 const Navbar = () => {
 
@@ -20,26 +20,39 @@ const Navbar = () => {
   // useEffect(() => {
   //   handleScroll()
   // }, [])
-  const {handleLogout} = useContext(AuthContext)
+
+  const location = useLocation()
+
+  // const colorChange = {
+  //   color: location.pathname !== '/' ? "black" : "#FFFFFF"
+  // }
+
+  const textStyle = {color:'#000000'}
+
+  const navigate = useNavigate()
 
   const Appbar = () => (
-    <Box sx={{mb:8}}>
+    <Container>
       <AppBar
         className='nav-bar'
+        position="fixed"
       >
         <Toolbar>
-          {isSmall ? <NavDrawer/> : ''}
-          
-          <Typography variant="h5" component="div" sx={{flexGrow:1}}>
-          SNAPS
-          </Typography>
-          <Link to="/photos/add">
-          <Button variant="contained" className="post-button" sx={{mr:1}}>Add Post</Button>
-          </Link>
-          <Button variant="outlined" className="logout-button" sx={{mr:1}} onClick={handleLogout}>Logout</Button>
+          {isSmall ? <NavDrawer/> : 
+          <>
+            <div onClick={() => navigate('/')} className="nav-logo">
+            SNAPS
+            </div>
+            <Box sx={{display:'flex'}}>
+              <Button onClick={() => navigate('/posts')} style={textStyle}>Works</Button>
+              <Button onClick={() => navigate('/about')} style={textStyle}>About</Button>
+              <Button onClick={() => navigate('/contact')} style={textStyle}>Contact</Button>
+              <MenuButton />
+            </Box>
+          </>}
         </Toolbar>
       </AppBar>
-    </Box>
+    </Container>
   )
 
   let theme = useTheme()

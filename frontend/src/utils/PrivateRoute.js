@@ -6,7 +6,7 @@ import AuthContext from '../components/context/AuthContext'
 const PrivateRoute = () => {
 
     const {auth} = useContext(AuthContext)
-    console.log('Private route works', auth)
+    // console.log('Private route works', auth)
 
     return auth ?  
         <>

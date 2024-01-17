@@ -1,8 +1,9 @@
 import React from 'react'
 import { Card,CardMedia, Typography, ImageList, ImageListItem, Box} from '@mui/material'
 import { sizing } from '@mui/system';
-import bannerImg from '../../assets/dark_ocean.jpg'
+import bannerImg from '../../assets/banner.jpg'
 import './Banner.css'
+import TextBanner from '../TextBanner/TextBanner';
 
 
 let draft2 = () => (
@@ -20,9 +21,7 @@ let draft = () =>(
     style={{
       backgroundImage: `url(${bannerImg})`
     }}>
-    <Box className="float-text">
-    <Typography variant="h1">SNAPS</Typography>
-    </Box>
+    <TextBanner/>
   </div>
 )
 

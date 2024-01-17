@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Photo, Post
+from django.core.files.storage import default_storage
 
 class PhotoSerializer(serializers.ModelSerializer):
 
@@ -22,6 +23,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     #overwrite the create function by removing photo_src and create subsequent object for each photo_src
     def create(self, validated_data):
+        print('Here')
         photos_data = validated_data.pop('post_photo')
         post = Post.objects.create(**validated_data)
         for photo in photos_data:
@@ -44,7 +46,6 @@ class PostSerializer(serializers.ModelSerializer):
             if "id" in photo.keys():
                 if Photo.objects.filter(id=photo['id']).exists():
                     photo_instance = Photo.objects.get(id=photo['id'])
-                    photo_instance.name = photo.get('name', photo_instance.name)
                     photo_instance.image = photo.get('image', photo_instance.image)
                     photo_instance.save()
                     photos_id_pool.append(photo_instance.id)
@@ -56,7 +57,12 @@ class PostSerializer(serializers.ModelSerializer):
         
         for photo_id in photos_with_same_post_instance:
             if photo_id not in photos_id_pool:
-                Photo.objects.filter(pk=photo_id).delete()
+                stupid = Photo.objects.filter(pk=photo_id)
+                for photo in stupid:
+                    path = photo.image.name
+                    if(path):
+                        default_storage.delete(path)
+                stupid.delete()
         return instance
 
         
